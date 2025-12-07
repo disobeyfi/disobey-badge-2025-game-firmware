@@ -1,0 +1,26 @@
+{
+  "name": "Badge Firmware Dev Container (MacOs)",
+  "dockerComposeFile": [
+    "../../docker-compose.yaml",
+  ],
+  "service": "app",
+  "workspaceFolder": "/workspace",
+  "runServices": [
+    "app"
+  ],
+  "overrideCommand": true,
+  "remoteEnv": {
+    "PYTHONUNBUFFERED": "1"
+  },
+  "postCreateCommand": "python3 -m pip install -r requirements.txt || true",
+  "features": {},
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "ms-python.python",
+        "ms-vscode.vscode-serial-monitor",
+        "ms-python.black-formatter"
+      ]
+    }
+  }
+}

@@ -1,0 +1,11 @@
+[project]
+name = "badgefirmware"
+version = "0.1.0"
+description = "Firmware for Disobey 2025 badge"
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "black>=25.9.0",
+    "esptool>=5.1.0",
+    "pyserial>=3.5",
+]

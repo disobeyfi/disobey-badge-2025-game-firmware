@@ -1,0 +1,14 @@
+{
+  "ota": {
+    "host": "https://t4pc0.upcloudobjects.com",
+    "wifi": {
+      "ssid": "DisobeyBadge2026",
+      "password": "disobey2025-badges-moved-permanently"
+    }
+  },
+  "espnow": {
+    "ch":1,
+    "beacon":20,
+    "nick": null
+  }
+}

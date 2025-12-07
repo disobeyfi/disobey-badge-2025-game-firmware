@@ -1,0 +1,56 @@
+# Build environment for ESP32 MicroPython project
+FROM ubuntu:22.04
+
+ENV DEBIAN_FRONTEND=noninteractive
+
+# Install system dependencies
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    git \
+    wget \
+    curl \
+    flex \
+    bison \
+    gperf \
+    python3 \
+    python3-pip \
+    python3-venv \
+    cmake \
+    ninja-build \
+    ccache \
+    libffi-dev \
+    libssl-dev \
+    libusb-1.0-0-dev \
+    ca-certificates \
+    build-essential \
+    pkg-config \
+    unzip \
+    xz-utils \
+    && rm -rf /var/lib/apt/lists/*
+
+WORKDIR /workspace
+
+# Copy project files
+COPY . .
+
+# Use bash shell for sourcing scripts
+SHELL ["/bin/bash", "-c"]
+
+# Source set_environ.sh to get ESP-IDF environment and build
+#RUN set -e && \
+#    source set_environ.sh && \
+#    echo "ESP-IDF version: ${IDF_VER}" && \
+#    echo "Board: ${BOARD}" && \
+#    echo "Board variant: ${BOARD_VARIANT}" && \
+#    cd micropython && \
+#    git submodule update --init --recursive && \
+#    cd .. && \
+#    make all
+
+# Set default environment variables for runtime
+ENV IDF_CCACHE_ENABLE=1
+ENV BOARD=ESP32_GENERIC_S3
+ENV BOARD_VARIANT=DEVKITW2
+ENV BAUD=115200
+
+# Default command
+CMD ["/bin/bash"]

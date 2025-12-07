@@ -1,0 +1,18 @@
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile.rootless
+    volumes:
+      - .:/workspace
+      # Default Linux USB device mapping
+      - type: bind
+        source: /dev/ttyUSB0
+        target: /dev/ttyUSB0
+        read_only: false
+        bind:
+          create_host_path: false
+    working_dir: /workspace
+    group_add:
+      - dialout
+    command: tail -f /dev/null

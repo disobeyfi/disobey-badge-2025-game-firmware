@@ -1,0 +1,22 @@
+	# source this file!
+export IDF_CCACHE_ENABLE=1
+# Fix for newer clang versions (macOS upgrades), uncomment if you're facing issues
+#export CFLAGS_EXTRA="-Wno-gnu-folding-constant"
+pushd micropython
+source tools/ci.sh
+popd
+export IDF_VER=v5.2.2
+export BOARD=ESP32_GENERIC_S3
+export BOARD_VARIANT=DEVKITW2
+export BAUD=115200
+export PORT=/dev/ttyUSB1
+
+#export manifest to freeze to firmware
+SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
+
+# Check if we're building minimal FW or not
+if [ "$FW_TYPE" = "minimal" ]; then
+	export FROZEN_MANIFEST=${SCRIPT_DIR}/frozen_firmware/frozen_manifest_minimal.py
+else
+	export FROZEN_MANIFEST=${SCRIPT_DIR}/frozen_firmware/frozen_manifest.py
+fi

@@ -1,0 +1,18 @@
+[submodule "libs/micropython-micro-gui"]
+	path = libs/micropython-micro-gui
+	url = https://github.com/Troyhy/micropython-micro-gui
+[submodule "micropython"]
+	path = micropython
+	url = https://github.com/disobeyfi/micropython.git
+[submodule "libs/micropython-msgpack"]
+	path = libs/micropython-msgpack
+	url = https://github.com/peterhinch/micropython-msgpack
+[submodule "libs/micropython-async"]
+	path = libs/micropython-async
+	url = https://github.com/peterhinch/micropython-async
+[submodule "libs/micropython-esp32-ota"]
+	path = libs/micropython-esp32-ota
+	url = https://github.com/glenn20/micropython-esp32-ota
+[submodule "libs/freezefs"]
+	path = libs/freezefs
+	url = https://github.com/bixb922/freezefs.git

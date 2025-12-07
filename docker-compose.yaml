@@ -1,0 +1,10 @@
+services:
+  app:
+    build: .
+    user: "${UID:-1000}:${GID:-1000}"
+    volumes:
+      - .:/workspace
+    working_dir: /workspace
+    group_add:
+      - dialout
+    command: tail -f /dev/null

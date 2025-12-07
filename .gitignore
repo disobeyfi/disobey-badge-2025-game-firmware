@@ -1,0 +1,10 @@
+/micro_init.stamp
+/set_environ.sh
+/micropython.bin
+dist/
+frozen_fs/BUILD
+frozen_firmware/modules/frozen_fs.py
+.venv/
+.env
+.devcontainer/devcontainer.local.json
+.devcontainer/local/
