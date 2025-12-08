@@ -62,6 +62,7 @@ Then use `make repl_with_firmware_dir` on your host to connect to the badge.
 
 ```bash
 # Inside the Dev Container
+make rebuild_mpy_cross # Compiling mpy cross will most likely fail on fresh container, so build it first
 make build_firmware
 
 # Deploy firmware outside of Dev container
