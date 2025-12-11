@@ -2,9 +2,16 @@
 
 # import frozen_fs mounts `frozen_fs` as `/readonly_fs`
 import frozen_fs
+import network
+import aioespnow
+import hardware_setup
+
+from gui.core.ugui import Screen, quiet
+
 from bdg.config import Config
 from bdg.version import Version
 from bdg.repl_helpers import load_app
+from bdg.screens.boot_screen import BootScr
 from ota import rollback as ota_rollback
 from ota import status as ota_status
 
@@ -29,3 +36,32 @@ if not boot_partition.info()[4] == "factory":
 Config.load()
 globals()["config"] = Config()
 globals()["load_app"] = load_app
+
+
+def start_badge():
+    Config.load()
+    channel = int(Config.config["espnow"]["ch"])
+
+    sta = network.WLAN(network.STA_IF)
+    # set configured wifi channels
+    sta.active(True)
+    sta.config(channel=channel)
+    sta.config(txpower=10)
+    e = aioespnow.AIOESPNow()
+    e.active(True)
+
+    # TODO: WE need to define channel
+    own_mac = sta.config("mac")
+    # print(f"MAC: \nmac={own_mac} ")
+    print(f"")
+    print(f"Badge's MAC address: #{own_mac}")
+
+    quiet()
+
+    def tmp():
+        print("Ready!")
+
+    Screen.change(BootScr, kwargs={"ready_cb": tmp, "espnow": e, "sta": sta})
+
+
+start_badge()

@@ -8,6 +8,7 @@ import gui.fonts.freesans20 as font
 import gui.fonts.font10 as font10  # noqa Create a display instance
 import hardware_setup
 from bdg.screens.loading_screen import LoadingScreen
+from bdg.screens.boot_screen import BootScr
 from badge.msg import BeaconMsg
 from badge.msg.connection import Connection, NowListener, Beacon
 
@@ -40,7 +41,11 @@ from bdg.widgets.hidden_active_widget import HiddenActiveWidget
 from bdg.screens.ota import OTAScreen
 
 
-ScoreLeds(LED_PIN, LED_AMOUNT, LED_ACTIVATE_PIN, )
+ScoreLeds(
+    LED_PIN,
+    LED_AMOUNT,
+    LED_ACTIVATE_PIN,
+)
 
 
 class ShowBdgs(Screen):
@@ -175,42 +180,6 @@ class OptionScreen(Screen):
             )
 
 
-class BootScr(Screen):
-    sync_update = True  # set screen update mode synchronous
-
-    def __init__(self, ready_cb=None, espnow=None, sta=None):
-        super().__init__()
-        self.ready_cb = ready_cb
-        self.espnow = espnow
-        ver = Version()
-        # verbose default indicates if fast rendering is enabled
-        self.wri = CWriter(ssd, font10, GREEN, BLACK, verbose=False)
-        self.ver_str = f"Ver:{ver.version} b:{ver.build}"
-        HiddenActiveWidget(self.wri)
-
-    def after_open(self):
-        blit(ssd, screen1, 0, 0)
-        self.show(True)
-        self.reg_task(self.next_scr(), False)
-        self.reg_task(global_buttons(), False)
-        nick = Config.config["espnow"]["nick"]
-        print(f"BootScr: {nick=}")
-        beaconmsg = BeaconMsg(nick)
-
-        Beacon.setup(self.espnow, beaconmsg)
-        Beacon.start(task=True)
-
-        NowListener.con_cb = new_con_cb
-        NowListener.start(self.espnow)
-
-    async def next_scr(self):
-        print(">>> next_scr")
-        await asyncio.sleep(3)
-        Label(self.wri, 155, 6, self.ver_str, bdcolor=False, bgcolor=AlphaColor(BLACK))
-        await asyncio.sleep(1)
-        launch(self.ready_cb, ())
-
-
 async def new_con_cb(conn: Connection, req=False):
     """
     Handles an incoming connection request by presenting the user with a
@@ -261,7 +230,7 @@ async def new_con_cb(conn: Connection, req=False):
             print(f"Con: Screen.REPLACE {Screen.current_screen=}")
             mode = Screen.REPLACE
 
-        if conn.con_id == 1: #tictactoe
+        if conn.con_id == 1:  # tictactoe
             Screen.change(
                 LoadingScreen,
                 mode=mode,
@@ -272,7 +241,7 @@ async def new_con_cb(conn: Connection, req=False):
                     "scr_args": (conn,),
                 },
             )
-        elif conn.con_id == 2: #reaction
+        elif conn.con_id == 2:  # reaction
             Screen.change(
                 LoadingScreen,
                 mode=mode,
@@ -285,7 +254,7 @@ async def new_con_cb(conn: Connection, req=False):
                 },
             )
 
-        elif conn.con_id == 3: #RPS
+        elif conn.con_id == 3:  # RPS
             Screen.change(
                 LoadingScreen,
                 mode=mode,
@@ -294,7 +263,7 @@ async def new_con_cb(conn: Connection, req=False):
                     "wait": 10,
                     "nxt_scr": RpsScreen,
                     # Casual mode: off
-                    "scr_args": (conn, ),
+                    "scr_args": (conn,),
                 },
             )
 
@@ -304,7 +273,11 @@ async def new_con_cb(conn: Connection, req=False):
 async def global_buttons():
     print("global_buttons")
     ev_subset = ButtonEvents.get_event_subset(
-        [("btn_select", ButAct.ACT_DOUBLE), ("btn_b", ButAct.ACT_LONG), ("btn_start", ButAct.ACT_LONG)],
+        [
+            ("btn_select", ButAct.ACT_DOUBLE),
+            ("btn_b", ButAct.ACT_LONG),
+            ("btn_start", ButAct.ACT_LONG),
+        ],
     )
 
     be = ButtonEvents(events=ev_subset)

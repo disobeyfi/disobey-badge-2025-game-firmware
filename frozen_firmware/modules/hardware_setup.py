@@ -18,7 +18,6 @@ freq(240_000_000)
 gc.collect()  # Precaution before instantiating framebuf
 ssd = SSD(spi, cs=pcs, dc=pdc, rst=prst, height=170, width=320, display=ADAFRUIT_1_9)
 
-
 # STATIC CONFIG CLASS
 class BtnConfig:
     btn_u = Pin(11, Pin.IN, Pin.PULL_UP)
