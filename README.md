@@ -9,6 +9,7 @@ A MicroPython firmware project for electronic badges. This repository manages th
 - **Docker Desktop** installed and running
 - **VS Code** with the [Dev Containers extension](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers)
   - Check also other tools in listed in https://containers.dev/supporting
+- **Mpremote** (optional)
 
 ### Setup
 
@@ -32,11 +33,17 @@ A MicroPython firmware project for electronic badges. This repository manages th
 3. Open in VS Code and reopen in container:
    - Open the project folder in VS Code
    - Press `F1` and select "Dev Containers: Reopen in Container"
+   - Select the devcontainer type you want to use: Linux, MacOs or MacOs - Rootless
    - Wait for the container to build and setup
 
-### macOS Note
+#### macOS Note
 
-⚠️ USB devices cannot be mounted into Docker containers on macOS. You must run `mpremote` commands and firmware deployment on the **host machine** (outside the container).
+⚠️ USB devices cannot be mounted into Docker containers on macOS. You must run `mpremote` commands and firmware deployment `make deploy` on the **host machine** (outside the container).
+
+**Set your usb serialport as an environment variable:**
+```
+export PORT=/dev/cu.usbserial-[badge-serialport-number]
+```
 
 **Install required packages on your macOS host:**
 
@@ -56,18 +63,17 @@ uv sync
 pip3 install --user pyserial esptool
 ```
 
-Then use `make repl_with_firmware_dir` on your host to connect to the badge.
-
 ### Build Firmware
 
 ```bash
 # Inside the Dev Container
-make rebuild_mpy_cross # Compiling mpy cross will most likely fail on fresh container, so build it first
+make rebuild_mpy_cross # Compiling mpy cross will most likely fail on fresh container, so rebuild it first
 make build_firmware
 
 # Deploy firmware outside of Dev container
 make deploy
 ```
+Then use `make repl_with_firmware_dir` on your host to connect to the badge.
 
 If you encounter issues, see [TROUBLESHOOTING.md](TROUBLESHOOTING.md) for solutions.
 
