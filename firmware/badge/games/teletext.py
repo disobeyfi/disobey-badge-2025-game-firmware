@@ -32,7 +32,8 @@ from gui.core.colors import (
     CYAN,
     WHITE,
 )
-from gui.fonts import font6, tt_mono8
+from gui.fonts import font6
+from bdg.fonts import tt_mono8
 from gui.widgets.label import Label
 from bdg.widgets.hidden_active_widget import HiddenActiveWidget
 from bdg.asyncbutton import ButtonEvents, ButAct
@@ -48,7 +49,7 @@ WIFI_PASSWORD = ""  # WiFi password
 APP_ID = ""  # YLE API application ID
 APP_KEY = ""  # YLE API application key
 
-HIDE_STATUS = False  # Set True to hide the status bar for more content
+HIDE_STATUS = True  # Set True to hide the status bar for more content
 
 # ---------------------------------------------------------------------------
 # Constants
