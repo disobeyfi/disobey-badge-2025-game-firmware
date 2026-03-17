@@ -73,9 +73,33 @@ class Config:
                 "beacon": 20,
                 "nick": clean_user_nick(config),
                 "b_needed": 10,
+                "rave_led_amount": max(1, int(config.get("espnow", {}).get("rave_led_amount", 10))),
+            },
+            "disobey-rave-assistant": {
+                "rave_led_amount": max(
+                    1,
+                    int(
+                        config.get("disobey-rave-assistant", {}).get(
+                            "rave_led_amount",
+                            config.get("espnow", {}).get("rave_led_amount", 10),
+                        )
+                    ),
+                ),
+                "preset": config.get("disobey-rave-assistant", {}).get("preset", "blue"),
             },
         }
         return Config.config
+
+    @staticmethod
+    def save() -> None:
+        """Save in-memory config to /config.json."""
+        try:
+            with open("/config.json", "w") as f:
+                ujson.dump(Config.config, f)
+            print("Config saved to /config.json")
+        except OSError as e:
+            print(f"Error saving config: {e}")
+            raise
 
     @staticmethod
     def set_wifi(ssid: str, key: str) -> None:
@@ -94,14 +118,8 @@ class Config:
         Config.config["ota"]["wifi"]["ssid"] = ssid
         Config.config["ota"]["wifi"]["password"] = key
         
-        # Save to /config.json
-        try:
-            with open("/config.json", "w") as f:
-                ujson.dump(Config.config, f)
-            print(f"WiFi config saved: SSID={ssid}")
-        except OSError as e:
-            print(f"Error saving config: {e}")
-            raise
+        Config.save()
+        print(f"WiFi config saved: SSID={ssid}")
     
     @staticmethod
     def set_nick(nick: str) -> None:
@@ -134,11 +152,5 @@ class Config:
         
         Config.config["espnow"]["nick"] = nick
         
-        # Save to /config.json
-        try:
-            with open("/config.json", "w") as f:
-                ujson.dump(Config.config, f)
-            print(f"Nickname saved: {nick}")
-        except OSError as e:
-            print(f"Error saving config: {e}")
-            raise
+        Config.save()
+        print(f"Nickname saved: {nick}")

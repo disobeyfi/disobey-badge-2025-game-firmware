@@ -14,5 +14,6 @@ __all__ = [
     "rps",
     "hackergotchi",
     "vibedemo",
-    "cutefox"
+    "cutefox",
+    "disobey_rave_assistant",
 ]
